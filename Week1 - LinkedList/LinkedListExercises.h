@@ -262,7 +262,17 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   //    very slow.
 
   // -----------------------------------------------------------
+  while (!left.empty() || !right.empty())
+  {
+    auto pushLeft = (!left.empty() && !right.empty() && left.front() <= right.front()) || right.empty();
 
+    auto nextItem = pushLeft ? left.front() : right.front();
+    merged.pushBack(nextItem->data);
+    if(pushLeft)
+      left.popFront();
+    else 
+      right.popFront();
+  }
   // We return the merged list by value here. It may be copied out of the
   // function, but usually the compiler will optimize this to automatically
   // create it directly in the correct memory space outside without copying.
