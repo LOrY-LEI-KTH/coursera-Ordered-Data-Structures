@@ -102,19 +102,25 @@ void LinkedList<T>::insertOrdered(const T& newData) {
   // other provided code for this project!
   Node* newNode =  new Node(newData);
   auto* c1 = getHeadPtr();
+  if (!c1 ||c1->data > newNode->data){
+    pushFront(newData);
+    return;
+  }
   while(c1 != getTailPtr()){
-    if (c1->data >= newNode->data && c1->next->data <=newNode->data )
+    if (c1->data <= newNode->data && c1->next->data >=newNode->data )
     {
       c1->next->prev = newNode;
       newNode->next = c1->next;
       c1->next = newNode;
       newNode->prev = c1;
+      size_++;
+      return;
     }
-    c1 = c1->next();
+    c1 = c1->next;
   }
   if (c1 == getTailPtr())
     pushBack(newData);
-  size_++;
+  
 
 
 
@@ -267,7 +273,7 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
     auto pushLeft = (!left.empty() && !right.empty() && left.front() <= right.front()) || right.empty();
 
     auto nextItem = pushLeft ? left.front() : right.front();
-    merged.pushBack(nextItem->data);
+    merged.pushBack(nextItem);
     if(pushLeft)
       left.popFront();
     else 
