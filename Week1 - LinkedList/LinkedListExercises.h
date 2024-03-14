@@ -100,6 +100,23 @@ void LinkedList<T>::insertOrdered(const T& newData) {
 
   // There are explicit examples of how to do all those things in the
   // other provided code for this project!
+  Node* newNode =  new Node(newData);
+  auto* c1 = getHeadPtr();
+  while(c1 != getTailPtr()){
+    if (c1->data >= newNode->data && c1->next->data <=newNode->data )
+    {
+      c1->next->prev = newNode;
+      newNode->next = c1->next;
+      c1->next = newNode;
+      newNode->prev = c1;
+    }
+    c1 = c1->next();
+  }
+  if (c1 == getTailPtr())
+    pushBack(newData);
+  size_++;
+
+
 
   // More hints:
   
