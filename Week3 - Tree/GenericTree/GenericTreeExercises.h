@@ -97,6 +97,15 @@ static void treeFactory(GenericTree<int>& tree) {
   // when you print it out. The main() function runs that test for you.
 
   // ...
+  // Create the nodes and add them to the tree
+  tree.clear();
+    auto rootNode = tree.createRoot(4);
+    auto node8 = rootNode->addChild(8);
+    auto node15 = rootNode->addChild(15);
+    auto node16 = node8->addChild(16);
+    auto node23 = node8->addChild(23);
+    node16->addChild(42);
+  
 
 }
 
@@ -304,6 +313,9 @@ std::vector<T> traverseLevels(GenericTree<T>& tree) {
   // This defines a type alias for the appropriate TreeNode dependent type.
   // This might be convenient.
   using TreeNode = typename GenericTree<T>::TreeNode;
+  
+   // Initialize a queue to perform level-order traversal
+    std::queue<TreeNode*> nodesQueue;
 
   // Now you can refer to a pointer to a TreeNode in this function like this.
   // TreeNode* someTreeNodePointer = nullptr;
@@ -325,6 +337,26 @@ std::vector<T> traverseLevels(GenericTree<T>& tree) {
   // with the .push_back() member function.
 
   // ...
+    // Enqueue the root node
+    nodesQueue.push(rootNodePtr);
+
+    // Perform level-order traversal
+    while (!nodesQueue.empty()) {
+        // Get the front node from the queue
+        auto current = nodesQueue.front();
+        nodesQueue.pop();
+
+        // Add the data of the current node to the results
+        results.push_back(current->data);
+
+        // Enqueue all children of the current node
+        for (auto child : current->childrenPtrs) {
+            if (child) {
+                nodesQueue.push(child);
+            }
+        }
+    }
+
 
   return results;
 }
